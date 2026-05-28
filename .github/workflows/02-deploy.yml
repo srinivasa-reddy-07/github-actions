@@ -40,4 +40,5 @@ jobs:
     needs: [lint, test]
     steps:
       - name: Simulating deployment
+        working-directory: .
         run: echo "Deploying..."
