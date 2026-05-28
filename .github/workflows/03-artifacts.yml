@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - '03-job-artifacts-and-outputs/**'
+      - '.github/workflows/03-artifacts.yml'
 
 defaults:
   run:

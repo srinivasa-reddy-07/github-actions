@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - '02-workflows-and-events/**'
+      - '.github/workflows/02-deploy.yml'
 
 defaults:
   run:
