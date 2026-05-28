@@ -1,0 +1,15 @@
+# Ignore node_modules in ANY subfolder
+**/node_modules/
+
+# Ignore build outputs in ANY subfolder
+**/dist/
+**/.next/
+**/build/
+
+# Ignore local environment variables and secrets
+**/.env
+**/.env.local
+
+# Ignore OS-specific system files
+.DS_Store
+Thumbs.db
