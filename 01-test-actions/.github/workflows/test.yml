@@ -1,6 +1,15 @@
 name: Trigger Workflow test
 
-on: push
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '01-test-actions/**'
+
+defaults:
+  run:
+    working-directory: ./01-test-actions
 
 jobs:
   test:

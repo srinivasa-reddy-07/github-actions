@@ -4,6 +4,10 @@ on:
   issues:
     types: [opened]
 
+defaults:
+  run:
+    working-directory: './02-workflows-and-events'
+
 jobs:
   output:
     runs-on: ubuntu-latest

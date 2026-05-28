@@ -1,5 +1,15 @@
 name: Lint, Test and Deploy
-on: push
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '02-workflows-and-events/**'
+
+defaults:
+  run:
+    working-directory: ./02-workflows-and-events
+
 jobs:
   lint:
     runs-on: ubuntu-latest
