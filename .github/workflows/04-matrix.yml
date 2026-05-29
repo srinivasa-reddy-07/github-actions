@@ -6,7 +6,7 @@ on:
     
     paths:
       - '04-control-execution-flow/**'
-      - '.github/workflows/04-execution-flow.yml'
+      - '.github/workflows/04-matrix.yml'
 
 defaults:
   run:
