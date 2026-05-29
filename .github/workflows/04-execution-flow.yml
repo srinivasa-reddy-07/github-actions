@@ -3,6 +3,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '04-control-execution-flow/**'
+      - '.github/workflows/04-execution-flow.yml'
+
+defaults:
+  run:
+    working-directory: ./03-job-artifacts-and-outputs
+
 jobs:
   lint:
     runs-on: ubuntu-latest
