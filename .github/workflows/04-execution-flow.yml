@@ -9,7 +9,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./03-job-artifacts-and-outputs
+    working-directory: ./04-control-execution-flow
 
 jobs:
   lint:
