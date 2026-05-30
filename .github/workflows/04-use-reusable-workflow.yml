@@ -1,0 +1,117 @@
+name: Use Reusable Deploy Workflow
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '04-control-execution-flow/**'
+      - '.github/workflows/04-use-reusable-workflow.yml'
+
+defaults:
+  run:
+    working-directory: ./04-control-execution-flow
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: 04-control-execution-flow/node_modules
+          key: ${{ runner.os }}-node-04-${{ hashFiles('04-control-execution-flow/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-04-
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Lint code
+        run: npm run lint
+  
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+     
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: 04-control-execution-flow/node_modules
+          key: ${{ runner.os }}-node-04-${{ hashFiles('04-control-execution-flow/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-04-
+      
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+      
+      - name: Test code
+        id: run-tests
+        run: npm run test
+      
+      - name: Upload test report
+        if: failure() && steps.run-tests.outcome == 'failure'
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-report
+          path: 04-control-execution-flow/test.json
+  
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: 04-control-execution-flow/node_modules
+          key: ${{ runner.os }}-node-04-${{ hashFiles('04-control-execution-flow/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-04-
+      
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+      
+      - name: Build website
+        id: build-website
+        run: npm run build
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist-files
+          path: 04-control-execution-flow/dist
+  
+  deploy:
+    needs: build
+    uses: ./.github/workflows/04-reusable-workflow.yml
+    with:
+      deploy-dir: dist-files
+
+  report:
+    needs: [lint, deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get test report
+        uses: actions/download-artifact@v4
+        with:
+          name: test-report
+          path: 04-control-execution-flow
+      
+      - name: Output contents
+        run: |
+          ls
+          cat test.json
