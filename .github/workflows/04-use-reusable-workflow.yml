@@ -99,6 +99,13 @@ jobs:
     uses: ./.github/workflows/04-reusable-workflow.yml
     with:
       deploy-dir: dist-files
+  
+  print-deploy-result:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print deploy result
+        run: echo "${{ needs.deploy.outputs.result }}"
 
   report:
     needs: [lint, deploy]
