@@ -105,6 +105,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print deploy result
+        working-directory: .
         run: echo "${{ needs.deploy.outputs.result }}"
 
   report:
