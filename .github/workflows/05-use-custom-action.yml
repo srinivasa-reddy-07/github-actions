@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
       - name: Load and cache dependencies
         uses: ./05-custom-actions/.github/actions/cache-deps
       - name: Lint code
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
       - name: Load and cache dependencies
         uses: ./05-custom-actions/.github/actions/cache-deps
       - name: Test code
@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
       - name: Load and cache dependencies
         uses: ./05-custom-actions/.github/actions/cache-deps
       - name: Build website
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
       - name: Get build artifacts
         uses: actions/download-artifact@v4
         with:
