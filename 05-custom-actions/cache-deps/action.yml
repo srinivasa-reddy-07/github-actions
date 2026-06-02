@@ -7,10 +7,10 @@ runs:
       id: cache
       uses: actions/cache@v4
       with:
-        path: 04-control-execution-flow/node_modules
-        key: ${{ runner.os }}-node-04-${{ hashFiles('04-control-execution-flow/package-lock.json') }}
+        path: 05-custom-actions/node_modules
+        key: ${{ runner.os }}-node-05-${{ hashFiles('05-custom-actions/package-lock.json') }}
         restore-keys: |
-          ${{ runner.os }}-node-04-
+          ${{ runner.os }}-node-05-
       
     - name: Install dependencies
       if: steps.cache.outputs.cache-hit != 'true'
