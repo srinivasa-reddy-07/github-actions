@@ -1,0 +1,70 @@
+name: Matrix Advanced Exercise
+
+on:
+  push:
+    branches:
+      - main
+    
+    paths: 
+      - '06-matrix-advanced/**'
+      - '.github/workflows/06-matrix-advanced.yml'
+
+defaults:
+  run:
+    working-directory: ./06-matrix-advanced
+
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22]
+        operating-system: [ubuntu-latest, windows-latest]
+    
+    runs-on: ${{ matrix.operating-system }}
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: 06-matrix-advanced/package-lock.json
+      
+      # - name: Cache dependencies
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: 06-matrix-advanced/node_modules
+      #     key: ${{ runner.os }}-node-06-${{ hashFiles('06-matrix-advanced/package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-node-06-
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build code
+        run: npm run build
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist-${{ matrix.operating-system }}-${{ matrix.node-version }}
+          path: 06-matrix-advanced/dist
+    
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with: 
+          path: 06-matrix-advanced/dist
+      
+      - name: Output contents
+        run: ls
+      
+      - name: Deploy
+        run: echo "Deploying..."
