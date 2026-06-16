@@ -19,4 +19,4 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Run Custom Action
-        uses: ./08-js-action/.github/actions/verify-version
+        uses: ./08-js-action/actions/verify-version
