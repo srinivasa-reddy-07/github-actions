@@ -1,0 +1,74 @@
+name: The Conditional Cleaner
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '07-conditional-artifacts/**'
+      - '.github/workflows/07-conditional-artifacts.yml'
+
+defaults:
+  run:
+    working-directory: ./07-conditional-artifacts
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Lint code
+        run: npm run lint
+      
+      - name: Test code
+        run: npm run test
+  
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build website
+        run: npm run build
+
+      - name: Create error logs
+        if: failure()
+        run: |
+          echo "Build failed at $(date)" >> error.log
+      
+      - name: Upload error logs
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: debug-logs
+          path: 07-conditional-artifacts/error.log
+
+
+      - name: Upload artifacts
+        if: success()
+        uses: actions/upload-artifact@v7
+        with:
+          name: production-build
+          path: 07-conditional-artifacts/dist
+  
+  notify:
+    needs: build
+    if: ${{ always() && needs.build.result == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Notification
+        run: echo "Build failed"

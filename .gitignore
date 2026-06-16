@@ -13,3 +13,6 @@
 # Ignore OS-specific system files
 .DS_Store
 Thumbs.db
+
+# Un-ignore the custom action's compiled dist directory
+!08-js-action/actions/verify-version/dist/

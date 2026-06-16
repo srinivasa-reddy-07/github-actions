@@ -1,0 +1,22 @@
+name: Run Custom JS Action
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '08-js-action/**'
+      - '.github/workflows/08-run-js-action.yml'
+
+defaults:
+  run:
+    working-directory: ./08-js-action
+
+jobs:
+  run-custom-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+      
+      - name: Run Custom Action
+        uses: ./08-js-action/.github/actions/verify-version
