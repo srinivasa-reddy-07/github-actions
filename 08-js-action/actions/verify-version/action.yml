@@ -1,0 +1,5 @@
+name: 'Verify Project Version'
+description: 'Reads and logs the project version from package.json'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
